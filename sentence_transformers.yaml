@@ -1,0 +1,12 @@
+name: sentence_transformers
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+dependencies:
+  - pytorch-cuda=12.1
+  - pytorch
+  - sentence-transformers
+  - jupyterlab
+  - ipywidgets
+  - scholarly
