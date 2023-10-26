@@ -15,6 +15,7 @@ if __name__ == "__main__":
     parser.add_argument("--max_authors", type=int, default=5)
     args = parser.parse_args()
 
+    # Load data generated from notebook
     google_scholar_dir = Path("data/google_scholar/")
     cat_path = google_scholar_dir / "categories.json"
     sub_cat_path = google_scholar_dir / "sub_categories.json"
@@ -24,6 +25,7 @@ if __name__ == "__main__":
     with sub_cat_path.open() as sub_cat_f:
         sub_categories = json.load(sub_cat_f)
 
+    # Search the closest topics with the input query
     st_model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
     query_embedding = st_model.encode([args.query], convert_to_tensor=True)
     assert isinstance(query_embedding, torch.Tensor)
@@ -35,6 +37,7 @@ if __name__ == "__main__":
     for cat, match in zip(found_cats, cat_searches):
         print(cat, match["score"])
 
+    # Using matched topics to search for authors
     authors = list(itertools.islice(scholarly.search_keywords(found_cats), args.max_authors))
     if len(authors) < 0:
         print("Found nobody")
